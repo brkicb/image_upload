@@ -24,18 +24,22 @@ class GetImagesView(APIView):
 
 class ImageUploadView(APIView):
     def post(self, request):
-        data = self.request.data
+        try:
+            data = self.request.data
 
-        image = data['image']
+            image = data['image']
 
-        created_image = Image.objects.create(
-            image=image,
-            alt='Laptop'
-        )
+            Image.objects.create(
+                image=image,
+                alt='Laptop'
+            )
 
-        print(created_image)
-
-        return Response(
-            {'success': 'Successfully uploaded image'},
-            status=status.HTTP_201_CREATED
-        )
+            return Response(
+                {'success': 'Successfully uploaded image'},
+                status=status.HTTP_201_CREATED
+            )
+        except:
+            return Response(
+                {'error': 'Something went wrong when uploading image'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

@@ -39,7 +39,7 @@ const homePage = () => {
 
         const config = {
             headers: {
-                'Accept': 'application/json',
+                'Accept': 'application/json'
             }
         };
 
