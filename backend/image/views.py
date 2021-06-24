@@ -31,7 +31,7 @@ class ImageUploadView(APIView):
 
             Image.objects.create(
                 image=image,
-                alt='Laptop'
+                alt='Would pass this from frontend'
             )
 
             return Response(
