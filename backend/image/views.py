@@ -28,10 +28,11 @@ class ImageUploadView(APIView):
             data = self.request.data
 
             image = data['image']
+            alt_text = data['alt_text']
 
             Image.objects.create(
                 image=image,
-                alt='Would pass this from frontend'
+                alt=alt_text
             )
 
             return Response(

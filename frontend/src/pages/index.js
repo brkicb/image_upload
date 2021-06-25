@@ -3,9 +3,14 @@ import Image from 'next/image';
 import axios from 'axios';
 
 const homePage = () => {
-    const [image, setImage] = useState(null);
+    const [formData, setFormData] = useState({
+        image: '',
+        alt_text: ''
+    });
     const [images, setImages] = useState(null);
     const [updated, setUpdated] = useState(false);
+
+    const { image, alt_text } = formData;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,19 +34,22 @@ const homePage = () => {
         fetchData();
     }, [updated]);
 
-    const onChange = e => setImage(e.target.files[0]);
+    const onFileChange = e => setFormData({ ...formData, [e.target.name]:e.target.files[0] });
+    const onTextChange = e => setFormData({ ...formData, [e.target.name]:e.target.value });
 
     const onSubmit = async e => {
         e.preventDefault();
-        
-        const formData = new FormData();
-        formData.append('image', image);
 
         const config = {
             headers: {
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data',
             }
         };
+
+        const formData = new FormData();
+        formData.append('image', image);
+        formData.append('alt_text', alt_text);
 
         const body = formData;
 
@@ -63,13 +71,27 @@ const homePage = () => {
                 <div className='col-5'>
                     <form onSubmit={onSubmit}>
                         <div className='form-group'>
-                            <label className='form-label'>
+                            <label className='form-label' htmlFor='image'>
                                 Image Upload
                             </label>
                             <input
                                 className='form-control'
                                 type='file'
-                                onChange={onChange}
+                                name='image'
+                                onChange={onFileChange}
+                                required
+                            />
+                        </div>
+                        <div className='form-group mt-3'>
+                            <label className='form-label' htmlFor='alt_text'>
+                                Alt Text
+                            </label>
+                            <input
+                                className='form-control'
+                                type='text'
+                                name='alt_text'
+                                onChange={onTextChange}
+                                value={alt_text}
                                 required
                             />
                         </div>
