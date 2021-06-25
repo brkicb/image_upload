@@ -3,14 +3,10 @@ import Image from 'next/image';
 import axios from 'axios';
 
 const homePage = () => {
-    const [formData, setFormData] = useState({
-        image: '',
-        alt_text: ''
-    });
+    const [image, setImage] = useState(null);
+    const [altText, setAltText] = useState('');
     const [images, setImages] = useState(null);
     const [updated, setUpdated] = useState(false);
-
-    const { image, alt_text } = formData;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,8 +30,8 @@ const homePage = () => {
         fetchData();
     }, [updated]);
 
-    const onFileChange = e => setFormData({ ...formData, [e.target.name]:e.target.files[0] });
-    const onTextChange = e => setFormData({ ...formData, [e.target.name]:e.target.value });
+    const onFileChange = e => setImage(e.target.files[0]);
+    const onTextChange = e => setAltText(e.target.value);
 
     const onSubmit = async e => {
         e.preventDefault();
@@ -49,7 +45,7 @@ const homePage = () => {
 
         const formData = new FormData();
         formData.append('image', image);
-        formData.append('alt_text', alt_text);
+        formData.append('alt_text', altText);
 
         const body = formData;
 
@@ -91,7 +87,7 @@ const homePage = () => {
                                 type='text'
                                 name='alt_text'
                                 onChange={onTextChange}
-                                value={alt_text}
+                                value={altText}
                                 required
                             />
                         </div>
